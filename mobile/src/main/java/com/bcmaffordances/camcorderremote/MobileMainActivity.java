@@ -13,7 +13,7 @@ import android.view.MenuItem;
 
 import com.bcmaffordances.wearableconnector.WearableConnectionListener;
 import com.bcmaffordances.wearableconnector.WearableConnector;
-import com.bcmaffordances.wearableconnector.message.WearableMessageListenerService;
+import com.bcmaffordances.wearableconnector.WearableConnectorConstants;
 
 /**
  * Mobile main activity
@@ -44,7 +44,7 @@ public class MobileMainActivity extends Activity {
         mLocalMessageReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                String message = intent.getStringExtra(WearableMessageListenerService.MESSAGE_INTENT_EXTRA);
+                String message = intent.getStringExtra(WearableConnectorConstants.MESSAGE_INTENT_EXTRA);
                 Log.d(TAG, "Message received: " + message);
             }
         };
