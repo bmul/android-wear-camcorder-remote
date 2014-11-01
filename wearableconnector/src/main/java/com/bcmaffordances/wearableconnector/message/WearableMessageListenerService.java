@@ -12,7 +12,7 @@ import com.google.android.gms.wearable.WearableListenerService;
  */
 public class WearableMessageListenerService extends WearableListenerService {
 
-    private static final String TAG = "MobileWearableMessageListenerService";
+    private static final String TAG = "WearableMessageListenerService";
 
     public static final String MESSAGE_PATH = "/camcorderRemote";
     public static final String MESSAGE_INTENT_EXTRA = "message";
@@ -21,12 +21,12 @@ public class WearableMessageListenerService extends WearableListenerService {
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
 
-        Log.d(TAG, "Incoming message on mobile app...");
+        Log.d(TAG, "Incoming message...");
 
         if (messageEvent.getPath().equals(MESSAGE_PATH)) {
             final String message = new String(messageEvent.getData());
-            Log.d(TAG, "Message path received on app is: " + messageEvent.getPath());
-            Log.d(TAG, "Message received on app is: " + message);
+            Log.d(TAG, "Message path: " + messageEvent.getPath());
+            Log.d(TAG, "Message received: " + message);
 
             // Broadcast message to activity for handling
             Intent messageIntent = new Intent();

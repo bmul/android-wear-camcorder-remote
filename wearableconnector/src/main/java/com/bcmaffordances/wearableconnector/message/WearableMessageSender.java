@@ -40,7 +40,7 @@ public class WearableMessageSender extends Thread {
             if (result.getStatus().isSuccess()) {
                 Log.d(TAG, "Message: {" + mMessage + "} successfully sent to: " + node.getDisplayName());
             } else {
-                Log.e(TAG, "Failed to send message to wearable device");
+                Log.e(TAG, "Failed to send message to device");
             }
         }
     }

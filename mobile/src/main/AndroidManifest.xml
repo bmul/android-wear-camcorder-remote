@@ -17,13 +17,13 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".message.WearableMessageListenerService">
+        <service android:name="com.bcmaffordances.wearableconnector.message.WearableMessageListenerService">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
             </intent-filter>
         </service>
 
-        <!-- Need for device sending data messages -->
+        <!-- Need for sending messages -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
