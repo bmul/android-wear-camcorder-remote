@@ -1,17 +1,19 @@
 package com.bcmaffordances.camcorderremote;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.bcmaffordances.camcorderremote.com.bcmaffordances.camcorderremote.connection.WearableConnectionListener;
-import com.bcmaffordances.camcorderremote.com.bcmaffordances.camcorderremote.connection.WearableConnector;
-import com.google.android.gms.wearable.MessageApi;
-import com.google.android.gms.wearable.MessageEvent;
-
-import java.util.Scanner;
+import com.bcmaffordances.wearableconnector.WearableConnectionListener;
+import com.bcmaffordances.wearableconnector.WearableConnector;
+import com.bcmaffordances.wearableconnector.message.WearableMessageListenerService;
 
 /**
  * Mobile main activity
@@ -20,7 +22,7 @@ public class MobileMainActivity extends Activity {
 
     private static final String TAG = "MobileMainActivity";
     private WearableConnector mWearableConnector;
-    private MessageApi.MessageListener mMessageListener;
+    private BroadcastReceiver mLocalMessageReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,27 +30,25 @@ public class MobileMainActivity extends Activity {
         Log.d(TAG, "onCreate");
         setContentView(R.layout.activity_mobile_main);
 
-        // TODO move to its own service class and use local broadcast manager?
-        mMessageListener = new MessageApi.MessageListener() {
-            @Override
-            public void onMessageReceived (MessageEvent m){
-                Log.d(TAG, "onMessageReceived: " + m.getPath());
-                Scanner s = new Scanner(m.getPath());
-                String command = s.next();
-                if(command.equals("start")) {
-                    Log.d(TAG, "Start message received");
-                }
-            }
-        };
-
         mWearableConnector = new WearableConnector(this, new WearableConnectionListener() {
             @Override
             public void onConnected() {
-                mWearableConnector.addListener(mMessageListener);
                 String message = "Hello wearable!";
                 mWearableConnector.sendMessage(message);
             }
         });
+
+        // Register a local broadcast receiver to handle messages from wearable
+        // devices that have been received by the message listening service.
+        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
+        mLocalMessageReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String message = intent.getStringExtra(WearableMessageListenerService.MESSAGE_INTENT_EXTRA);
+                Log.d(TAG, "Message received: " + message);
+            }
+        };
+        LocalBroadcastManager.getInstance(this).registerReceiver(mLocalMessageReceiver, messageFilter);
 
     }
 
@@ -69,7 +69,7 @@ public class MobileMainActivity extends Activity {
     @Override
     protected void onDestroy() {
         Log.d(TAG, "onDestroy");
-        mWearableConnector.removeListener(mMessageListener);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mLocalMessageReceiver);
         super.onDestroy();
     }
 

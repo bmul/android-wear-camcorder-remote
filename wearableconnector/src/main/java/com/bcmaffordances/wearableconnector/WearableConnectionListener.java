@@ -1,4 +1,4 @@
-package com.bcmaffordances.camcorderremote.com.bcmaffordances.camcorderremote.connection;
+package com.bcmaffordances.wearableconnector;
 
 /**
  * Created by bmullins on 10/31/14.

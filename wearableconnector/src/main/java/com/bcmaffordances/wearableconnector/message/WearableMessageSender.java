@@ -1,4 +1,4 @@
-package com.bcmaffordances.camcorderremote.com.bcmaffordances.camcorderremote.connection;
+package com.bcmaffordances.wearableconnector.message;
 
 import android.util.Log;
 
@@ -11,7 +11,7 @@ import com.google.android.gms.wearable.Wearable;
 /**
  * Created by bmullins on 10/31/14.
  */
-class WearableMessageSender extends Thread {
+public class WearableMessageSender extends Thread {
 
     private static final String TAG = "WearableMessageSender";
 
@@ -20,7 +20,7 @@ class WearableMessageSender extends Thread {
     private GoogleApiClient mGoogleApiClient;
 
     // Constructor to send a message to the data layer
-    WearableMessageSender(String msg, GoogleApiClient googleApiClient) {
+    public WearableMessageSender(String msg, GoogleApiClient googleApiClient) {
         mPath = "/camcorderRemote"; // specify endpoint at receiving node
         mMessage = msg;
         mGoogleApiClient = googleApiClient;

@@ -1,17 +1,19 @@
-package com.bcmaffordances.camcorderremote.com.bcmaffordances.camcorderremote.connection;
+package com.bcmaffordances.wearableconnector;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.bcmaffordances.wearableconnector.message.WearableMessageSender;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wearable.MessageApi;
-import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
+import com.google.android.gms.wearable.Node;
+
 
 /**
  * Class to encapsulate connecting to wearable devices.
@@ -29,7 +31,7 @@ public class WearableConnector {
                     @Override
                     public void onConnected(Bundle connectionHint) {
                         Log.d(TAG, "onConnected: " + connectionHint);
-                        //findWearableNode();
+                        //findWearableNode(); TODO remove
                         if (null != listener) {
                             listener.onConnected();
                         }
