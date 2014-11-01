@@ -1,11 +1,9 @@
 package com.bcmaffordances.wearableconnector;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.bcmaffordances.wearableconnector.message.WearableMessageSender;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.Wearable;
@@ -20,30 +18,13 @@ public class WearableConnector {
     private static final String TAG = "WearableConnector";
     private GoogleApiClient mGoogleApiClient;
 
-    public WearableConnector(Context ctx, final WearableConnectionListener listener) {
+    public WearableConnector(Context ctx,
+                             GoogleApiClient.ConnectionCallbacks connectionCallbacks,
+                             GoogleApiClient.OnConnectionFailedListener connectionFailedListener) {
 
         mGoogleApiClient = new GoogleApiClient.Builder(ctx)
-                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                    @Override
-                    public void onConnected(Bundle connectionHint) {
-                        Log.d(TAG, "onConnected: " + connectionHint);
-                        //findWearableNode(); TODO remove
-                        if (null != listener) {
-                            listener.onConnected();
-                        }
-                    }
-
-                    @Override
-                    public void onConnectionSuspended(int cause) {
-                        Log.d(TAG, "onConnectionSuspended: " + cause);
-                    }
-                })
-                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(ConnectionResult result) {
-                        Log.d(TAG, "onConnectionFailed: " + result);
-                    }
-                })
+                .addConnectionCallbacks(connectionCallbacks)
+                .addOnConnectionFailedListener(connectionFailedListener)
                 .addApi(Wearable.API)
                 .build();
     }

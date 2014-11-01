@@ -11,9 +11,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.bcmaffordances.wearableconnector.WearableConnectionListener;
 import com.bcmaffordances.wearableconnector.WearableConnector;
 import com.bcmaffordances.wearableconnector.WearableConnectorConstants;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 /**
  * Mobile main activity
@@ -30,24 +31,41 @@ public class MobileMainActivity extends Activity {
         Log.d(TAG, "onCreate");
         setContentView(R.layout.activity_mobile_main);
 
-        mWearableConnector = new WearableConnector(this, new WearableConnectionListener() {
+        // Setup wearable connection callbacks
+        GoogleApiClient.OnConnectionFailedListener wearableConnectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
             @Override
-            public void onConnected() {
+            public void onConnectionFailed(ConnectionResult result) {
+                Log.d(TAG, "onConnectionFailed: " + result);
+            }
+        };
+        GoogleApiClient.ConnectionCallbacks wearableConnectionCallbacks = new GoogleApiClient.ConnectionCallbacks() {
+            @Override
+            public void onConnected(Bundle connectionHint) {
+                Log.d(TAG, "onConnected: " + connectionHint);
                 String message = "Hello wearable!";
                 mWearableConnector.sendMessage(message);
             }
-        });
+            @Override
+            public void onConnectionSuspended(int cause) {
+                Log.d(TAG, "onConnectionSuspended: " + cause);
+            }
+        };
 
-        // Register a local broadcast receiver to handle messages from wearable
-        // devices that have been received by the message listening service.
-        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
+        mWearableConnector = new WearableConnector(
+                this,
+                wearableConnectionCallbacks,
+                wearableConnectionFailedListener);
+
+        // Register a local broadcast receiver to handle messages that
+        // have been received by the wearable message listening service.
         mLocalMessageReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String message = intent.getStringExtra(WearableConnectorConstants.MESSAGE_INTENT_EXTRA);
-                Log.d(TAG, "Message received: " + message);
+                Log.d(TAG, "Message received from wearable: " + message);
             }
         };
+        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
         LocalBroadcastManager.getInstance(this).registerReceiver(mLocalMessageReceiver, messageFilter);
 
     }
