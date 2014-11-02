@@ -7,9 +7,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.wearable.view.WatchViewStub;
+import android.support.wearable.view.GridViewPager;
 import android.util.Log;
-import android.widget.TextView;
+import android.view.WindowManager;
 
 import com.bcmaffordances.wearableconnector.WearableConnector;
 import com.bcmaffordances.wearableconnector.WearableConnectorConstants;
@@ -20,7 +20,8 @@ public class WearMainActivity extends Activity {
 
     private static final String TAG = "WearMainActivity";
 
-    private TextView mTextView;
+    private GridViewPager mGridViewPager;
+    private CamcorderRemotePagerAdapter mCamcorderRemotePagerAdapter;
     private WearableConnector mWearableConnector;
     private BroadcastReceiver mLocalMessageReceiver;
 
@@ -29,13 +30,13 @@ public class WearMainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wear_main);
 
-        final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
-        stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
-            @Override
-            public void onLayoutInflated(WatchViewStub stub) {
-                mTextView = (TextView) stub.findViewById(R.id.text);
-            }
-        });
+        mCamcorderRemotePagerAdapter = new CamcorderRemotePagerAdapter(getFragmentManager());
+        mGridViewPager = (GridViewPager) findViewById(R.id.pager);
+        mGridViewPager.setAdapter(mCamcorderRemotePagerAdapter);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+
+
 
         // Setup wearable connection callbacks
         GoogleApiClient.OnConnectionFailedListener wearableConnectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
