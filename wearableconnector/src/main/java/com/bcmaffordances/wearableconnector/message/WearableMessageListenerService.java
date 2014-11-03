@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.bcmaffordances.wearableconnector.WearableConnectorConstants;
+import com.bcmaffordances.wearableconnector.CamcorderRemoteConstants;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.WearableListenerService;
 
@@ -20,7 +20,7 @@ public class WearableMessageListenerService extends WearableListenerService {
 
         Log.d(TAG, "Incoming message...");
 
-        if (messageEvent.getPath().equals(WearableConnectorConstants.MESSAGE_PATH)) {
+        if (messageEvent.getPath().equals(CamcorderRemoteConstants.MESSAGE_PATH)) {
             final String message = new String(messageEvent.getData());
             Log.d(TAG, "Message path: " + messageEvent.getPath());
             Log.d(TAG, "Message received: " + message);
@@ -28,7 +28,7 @@ public class WearableMessageListenerService extends WearableListenerService {
             // Broadcast message to activity for handling
             Intent messageIntent = new Intent();
             messageIntent.setAction(Intent.ACTION_SEND);
-            messageIntent.putExtra(WearableConnectorConstants.MESSAGE_INTENT_EXTRA, message);
+            messageIntent.putExtra(CamcorderRemoteConstants.MESSAGE_INTENT_EXTRA, message);
             LocalBroadcastManager.getInstance(this).sendBroadcast(messageIntent);
 
         } else {

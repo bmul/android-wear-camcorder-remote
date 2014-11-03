@@ -13,6 +13,7 @@
         android:layout_height="104dp">
 
         <android.support.wearable.view.CircledImageView
+            android:id="@+id/actionButtonImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

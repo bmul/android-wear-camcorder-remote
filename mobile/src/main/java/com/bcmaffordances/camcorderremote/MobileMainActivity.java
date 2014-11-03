@@ -11,8 +11,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.bcmaffordances.wearableconnector.CamcorderRemoteConstants;
 import com.bcmaffordances.wearableconnector.WearableConnector;
-import com.bcmaffordances.wearableconnector.WearableConnectorConstants;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -61,8 +61,21 @@ public class MobileMainActivity extends Activity {
         mLocalMessageReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                String message = intent.getStringExtra(WearableConnectorConstants.MESSAGE_INTENT_EXTRA);
+                String message = intent.getStringExtra(CamcorderRemoteConstants.MESSAGE_INTENT_EXTRA);
                 Log.d(TAG, "Message received from wearable: " + message);
+                if (message.equals(CamcorderRemoteConstants.REQUEST_RECORD)) {
+                    mWearableConnector.sendMessage(CamcorderRemoteConstants.RESPONSE_RECORDING);
+                }
+                else if(message.equals(CamcorderRemoteConstants.REQUEST_RESUME)) {
+                    mWearableConnector.sendMessage(CamcorderRemoteConstants.RESPONSE_RESUMED);
+                }
+                else if(message.equals(CamcorderRemoteConstants.REQUEST_PAUSE)) {
+                    mWearableConnector.sendMessage(CamcorderRemoteConstants.RESPONSE_PAUSED);
+                }
+                else if(message.equals(CamcorderRemoteConstants.REQUEST_STOP)) {
+                    mWearableConnector.sendMessage(CamcorderRemoteConstants.RESPONSE_STOPPED);
+                }
+
             }
         };
         IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);

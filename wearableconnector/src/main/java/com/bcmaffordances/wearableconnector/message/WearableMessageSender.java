@@ -2,7 +2,7 @@ package com.bcmaffordances.wearableconnector.message;
 
 import android.util.Log;
 
-import com.bcmaffordances.wearableconnector.WearableConnectorConstants;
+import com.bcmaffordances.wearableconnector.CamcorderRemoteConstants;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.Node;
@@ -34,7 +34,7 @@ public class WearableMessageSender extends Thread {
             MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
                     mGoogleApiClient,
                     node.getId(),
-                    WearableConnectorConstants.MESSAGE_PATH,
+                    CamcorderRemoteConstants.MESSAGE_PATH,
                     mMessage.getBytes()
             ).await();
 

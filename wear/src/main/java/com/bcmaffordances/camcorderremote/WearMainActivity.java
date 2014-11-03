@@ -11,11 +11,16 @@ import android.support.wearable.view.GridViewPager;
 import android.util.Log;
 import android.view.WindowManager;
 
+import com.bcmaffordances.camcorderremote.state.ReadyState;
+import com.bcmaffordances.camcorderremote.state.WearableRecordingStateContext;
+import com.bcmaffordances.wearableconnector.CamcorderRemoteConstants;
 import com.bcmaffordances.wearableconnector.WearableConnector;
-import com.bcmaffordances.wearableconnector.WearableConnectorConstants;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+/**
+ * Main activity for the wearable device.
+ */
 public class WearMainActivity extends Activity {
 
     private static final String TAG = "WearMainActivity";
@@ -24,19 +29,12 @@ public class WearMainActivity extends Activity {
     private CamcorderRemotePagerAdapter mCamcorderRemotePagerAdapter;
     private WearableConnector mWearableConnector;
     private BroadcastReceiver mLocalMessageReceiver;
+    private WearableRecordingStateContext mRecordingStateContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wear_main);
-
-        mCamcorderRemotePagerAdapter = new CamcorderRemotePagerAdapter(getFragmentManager());
-        mGridViewPager = (GridViewPager) findViewById(R.id.pager);
-        mGridViewPager.setAdapter(mCamcorderRemotePagerAdapter);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-
-
 
         // Setup wearable connection callbacks
         GoogleApiClient.OnConnectionFailedListener wearableConnectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
@@ -48,16 +46,15 @@ public class WearMainActivity extends Activity {
         GoogleApiClient.ConnectionCallbacks wearableConnectionCallbacks = new GoogleApiClient.ConnectionCallbacks() {
             @Override
             public void onConnected(Bundle connectionHint) {
-                Log.d(TAG, "onConnected: " + connectionHint);
-                String message = "Hello app from wearable!";
-                mWearableConnector.sendMessage(message);
+                Log.d(TAG, "onConnected: ");
+                mRecordingStateContext.changeState(new ReadyState());
+                mCamcorderRemotePagerAdapter.notifyDataSetChanged();
             }
             @Override
             public void onConnectionSuspended(int cause) {
                 Log.d(TAG, "onConnectionSuspended: " + cause);
             }
         };
-
         mWearableConnector = new WearableConnector(
                 this,
                 wearableConnectionCallbacks,
@@ -68,12 +65,20 @@ public class WearMainActivity extends Activity {
         mLocalMessageReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                String message = intent.getStringExtra(WearableConnectorConstants.MESSAGE_INTENT_EXTRA);
+                String message = intent.getStringExtra(CamcorderRemoteConstants.MESSAGE_INTENT_EXTRA);
                 Log.d(TAG, "Message received from app: " + message);
+                mRecordingStateContext.changeState(message);
+                mCamcorderRemotePagerAdapter.notifyDataSetChanged();
             }
         };
         IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
         LocalBroadcastManager.getInstance(this).registerReceiver(mLocalMessageReceiver, messageFilter);
+
+        mRecordingStateContext = new WearableRecordingStateContext(mWearableConnector);
+        mCamcorderRemotePagerAdapter = new CamcorderRemotePagerAdapter(getFragmentManager(), mRecordingStateContext);
+        mGridViewPager = (GridViewPager) findViewById(R.id.pager);
+        mGridViewPager.setAdapter(mCamcorderRemotePagerAdapter);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override

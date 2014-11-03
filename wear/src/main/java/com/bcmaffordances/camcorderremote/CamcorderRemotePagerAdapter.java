@@ -4,13 +4,20 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.wearable.view.FragmentGridPagerAdapter;
 
+import com.bcmaffordances.camcorderremote.state.WearableRecordingStateContext;
+
 /**
  * Pager adapter for controlling a camcorder.
  */
 public class CamcorderRemotePagerAdapter extends FragmentGridPagerAdapter  {
 
-    public CamcorderRemotePagerAdapter(FragmentManager fragmentManager) {
+    private static final String TAG = "CamcorderRemotePagerAdapter";
+    private WearableRecordingStateContext mRecordingStateContext;
+
+    public CamcorderRemotePagerAdapter(FragmentManager fragmentManager,
+                                       WearableRecordingStateContext recordingStateContext) {
         super(fragmentManager);
+        mRecordingStateContext = recordingStateContext;
     }
 
     @Override
@@ -20,11 +27,17 @@ public class CamcorderRemotePagerAdapter extends FragmentGridPagerAdapter  {
 
     @Override
     public int getColumnCount(int i) {
-        return 1;
+        return 2;
     }
 
     @Override
     public Fragment getFragment(int rowIndex, int colIndex) {
-        return new ActionFragment();
+        if (0 == colIndex) {
+            return mRecordingStateContext.getRecordActionFragment();
+        }
+        if (1 == colIndex) {
+            return mRecordingStateContext.getStopActionFragment();
+        }
+        return null;
     }
 }
