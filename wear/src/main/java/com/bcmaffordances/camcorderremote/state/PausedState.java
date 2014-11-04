@@ -13,7 +13,7 @@ import com.bcmaffordances.wearableconnector.WearableConnector;
 public class PausedState extends AbstractWearableRecordingState {
     @Override
     public ActionFragment getRecordActionFragment(final WearableConnector wearableConnector) {
-        final ActionFragment actionFragment = ActionFragment.create(R.drawable.ic_full_sad, R.string.resume, null);
+        final ActionFragment actionFragment = ActionFragment.create(android.R.drawable.ic_media_play, R.string.resume, null);
         actionFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

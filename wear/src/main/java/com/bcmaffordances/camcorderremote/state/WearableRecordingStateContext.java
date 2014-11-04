@@ -5,13 +5,17 @@ import com.bcmaffordances.wearableconnector.CamcorderRemoteConstants;
 import com.bcmaffordances.wearableconnector.WearableConnector;
 
 /**
- * Created by bmullins on 11/2/14.
+ * Class to encapsulate the recording state on the wearable.
  */
 public class WearableRecordingStateContext {
 
     private WearableRecordingState mCurrentState;
     private WearableConnector mWearableConnector;
 
+    /**
+     * Constructor
+     * @param wearableConnector
+     */
     public WearableRecordingStateContext(WearableConnector wearableConnector) {
         mWearableConnector = wearableConnector;
         mCurrentState = new UninitializedState();
