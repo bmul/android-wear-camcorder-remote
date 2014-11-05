@@ -19,6 +19,10 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     wearApp project(':wear')
@@ -26,4 +30,8 @@ dependencies {
         transitive = false
     }
     compile 'com.google.android.gms:play-services:6.1.71'
+
+    // Mp4Parser
+    compile 'com.googlecode.mp4parser:isoparser:1.0.4.2'
+    compile 'org.aspectj:aspectjrt:1.7.3'
 }

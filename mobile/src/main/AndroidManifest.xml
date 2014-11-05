@@ -16,17 +16,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".VideoCaptureActivity"
+            android:label="VideoCaptureActivity"
+            android:screenOrientation="landscape"/>
 
-        <service android:name="com.bcmaffordances.wearableconnector.message.WearableMessageListenerService">
+        <service
+            android:name="com.bcmaffordances.wearableconnector.message.WearableMessageListenerService">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
             </intent-filter>
         </service>
+        <service
+            android:name=".stitching.VideoStitchingService"
+            android:exported="false"/>
 
-        <!-- Need for sending messages -->
+        <!-- Needed for sending wearable messages -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
     </application>
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO"></uses-permission>
+    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
 </manifest>
