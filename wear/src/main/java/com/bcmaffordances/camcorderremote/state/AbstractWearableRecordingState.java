@@ -14,7 +14,7 @@ public abstract class AbstractWearableRecordingState implements WearableRecordin
 
     @Override
     public ActionFragment getStopActionFragment(final WearableConnector wearableConnector) {
-        final ActionFragment actionFragment = ActionFragment.create(R.drawable.ic_full_cancel, R.string.stop, null);
+        final ActionFragment actionFragment = ActionFragment.create(R.drawable.stop, R.string.stop, null);
         actionFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -14,7 +14,7 @@ public class ReadyState extends AbstractWearableRecordingState {
 
     @Override
     public ActionFragment getRecordActionFragment(final WearableConnector wearableConnector) {
-        final ActionFragment actionFragment = ActionFragment.create(android.R.drawable.ic_media_play, R.string.record, null);
+        final ActionFragment actionFragment = ActionFragment.create(R.drawable.play, R.string.record, null);
         actionFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
