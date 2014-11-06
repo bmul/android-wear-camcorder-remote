@@ -150,19 +150,19 @@ public class VideoCaptureActivity extends Activity {
                 String message = intent.getStringExtra(CamcorderRemoteConstants.MESSAGE_INTENT_EXTRA);
                 Log.d(TAG, "Message received from wearable: " + message);
                 if (message.equals(CamcorderRemoteConstants.REQUEST_RECORD)) {
-                    mVideoRecorder.startRecording();
+                    startRecording(mCameraPreviewFrame);
                     mWearableConnector.sendMessage(CamcorderRemoteConstants.RESPONSE_RECORDING);
                 }
                 else if(message.equals(CamcorderRemoteConstants.REQUEST_RESUME)) {
-                    mVideoRecorder.resumeRecording();
+                    resumeRecording(mCameraPreviewFrame);
                     mWearableConnector.sendMessage(CamcorderRemoteConstants.RESPONSE_RESUMED);
                 }
                 else if(message.equals(CamcorderRemoteConstants.REQUEST_PAUSE)) {
-                    mVideoRecorder.pauseRecording();
+                    pauseRecording(mCameraPreviewFrame);
                     mWearableConnector.sendMessage(CamcorderRemoteConstants.RESPONSE_PAUSED);
                 }
                 else if(message.equals(CamcorderRemoteConstants.REQUEST_STOP)) {
-                    mVideoRecorder.stopRecording();
+                    stopRecording(mCameraPreviewFrame);
                     mWearableConnector.sendMessage(CamcorderRemoteConstants.RESPONSE_STOPPED);
                 }
 
