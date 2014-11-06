@@ -8,10 +8,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.OrientationEventListener;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -45,9 +42,6 @@ public class VideoCaptureActivity extends Activity {
     private VideoRecorder mVideoRecorder;
     private RecordingStateContext mRecordingStateContext;
     private FrameLayout mCameraPreviewFrame;
-    private VideoCaptureOrientationEventListener mOrientationListener;
-    // The degrees of the device rotated clockwise from its natural orientation.
-    private int mLastRawOrientation = OrientationEventListener.ORIENTATION_UNKNOWN;
 
 
     @Override
@@ -75,7 +69,6 @@ public class VideoCaptureActivity extends Activity {
     @Override
     public void onPause() {
         super.onPause();
-        mOrientationListener.disable();
         mVideoRecorder.release();
     }
 
@@ -95,7 +88,6 @@ public class VideoCaptureActivity extends Activity {
     // gets called by the button press
     public void startRecording(View v) {
         Log.d(TAG, "startRecording()");
-        mOrientationListener.enable();
         mVideoRecorder.startRecording();
         mRecordingStateContext.changeState(new StartedRecordingState(mActivity));
         mRecordingStateContext.updateDisplayedButtons();
@@ -123,35 +115,6 @@ public class VideoCaptureActivity extends Activity {
         mVideoRecorder.stopRecording();
         mRecordingStateContext.changeState(new StoppedRecordingState(mActivity));
         mRecordingStateContext.updateDisplayedButtons();
-    }
-
-    private class VideoCaptureOrientationEventListener extends OrientationEventListener {
-
-        public VideoCaptureOrientationEventListener(Context context) {
-            super(context);
-        }
-
-        @Override
-        public void onOrientationChanged(int orientation) {
-
-            // TODO This isn't being invoked ever. In v.next, it would be
-            // cool to just rotate the camera button images on rotation events.
-
-            // Keep the last known orientation. If the user first orients
-            // the camera and then points the camera to floor or sky, we still have
-            // the correct orientation.
-            Log.d(TAG, "onOrientationChanged()");
-            if (orientation == ORIENTATION_UNKNOWN) return;
-
-            mLastRawOrientation = orientation;
-
-            // create new layout with the current orientation
-            Log.d(TAG, "Redrawing view due to orientation change");
-            ViewGroup appRoot = (ViewGroup) findViewById(R.id.preview_root);
-            //appRoot.removeView(mCameraPreviewFrame);
-            LayoutInflater inflater = getLayoutInflater();
-            //inflater.inflate(R.layout.video_capture, appRoot);
-        }
     }
 
     private void initWearableConnector() {
@@ -208,8 +171,6 @@ public class VideoCaptureActivity extends Activity {
     }
 
     private void initVideoRecorder() {
-
-        mOrientationListener = new VideoCaptureOrientationEventListener(this);
 
         mRecordingStateContext = new RecordingStateContext(mActivity);
         mRecordingStateContext.updateDisplayedButtons();
