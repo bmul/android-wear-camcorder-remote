@@ -53,7 +53,7 @@ public class VideoCaptureActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.setContentView(R.layout.video_capture);
         mCameraPreviewFrame = (FrameLayout)super.findViewById(R.id.camera_preview);
-
+        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         mActivity = this;
         initWearableConnector();
         initVideoRecorder();
@@ -130,8 +130,6 @@ public class VideoCaptureActivity extends Activity {
             @Override
             public void onConnected(Bundle connectionHint) {
                 Log.d(TAG, "onConnected: " + connectionHint);
-                String message = "Hello wearable!";
-                mWearableConnector.sendMessage(message);
             }
             @Override
             public void onConnectionSuspended(int cause) {
@@ -152,15 +150,19 @@ public class VideoCaptureActivity extends Activity {
                 String message = intent.getStringExtra(CamcorderRemoteConstants.MESSAGE_INTENT_EXTRA);
                 Log.d(TAG, "Message received from wearable: " + message);
                 if (message.equals(CamcorderRemoteConstants.REQUEST_RECORD)) {
+                    mVideoRecorder.startRecording();
                     mWearableConnector.sendMessage(CamcorderRemoteConstants.RESPONSE_RECORDING);
                 }
                 else if(message.equals(CamcorderRemoteConstants.REQUEST_RESUME)) {
+                    mVideoRecorder.resumeRecording();
                     mWearableConnector.sendMessage(CamcorderRemoteConstants.RESPONSE_RESUMED);
                 }
                 else if(message.equals(CamcorderRemoteConstants.REQUEST_PAUSE)) {
+                    mVideoRecorder.pauseRecording();
                     mWearableConnector.sendMessage(CamcorderRemoteConstants.RESPONSE_PAUSED);
                 }
                 else if(message.equals(CamcorderRemoteConstants.REQUEST_STOP)) {
+                    mVideoRecorder.stopRecording();
                     mWearableConnector.sendMessage(CamcorderRemoteConstants.RESPONSE_STOPPED);
                 }
 

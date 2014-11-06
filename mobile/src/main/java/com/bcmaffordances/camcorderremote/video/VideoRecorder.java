@@ -36,6 +36,7 @@ public class VideoRecorder {
     private Context mCtx;
     private VideoStitcher mVideoStitcher;
     private VideoFile mVideoFile;
+    private boolean mIsRecording = false;
 
     /**
      * Initialize the camera. This is done in the background since
@@ -70,6 +71,7 @@ public class VideoRecorder {
     }
 
     public void release() {
+        stop();
         releaseMediaRecorder();
         releaseCameraObject();
         if (null != mReleaseCameraListener) {
@@ -140,6 +142,10 @@ public class VideoRecorder {
 
     private void record() {
 
+        if (mIsRecording) {
+            return;
+        }
+
         mVideoFile = new VideoFile();
         // we need to unlock the camera so that mediaRecorder can use it
         mCamera.unlock(); // unnecessary in API >= 14
@@ -157,6 +163,7 @@ public class VideoRecorder {
         try {
             mMediaRecorder.prepare();
             mMediaRecorder.start(); // throws IllegalStateException if not prepared
+            mIsRecording = true;
         } catch (Exception e) {
             Log.wtf(TAG, "Failed to prepare MediaRecorder", e);
             releaseMediaRecorder();
@@ -164,8 +171,14 @@ public class VideoRecorder {
     }
 
     private void stop() {
+
+        if (!mIsRecording) {
+            return;
+        }
+
         try {
             mMediaRecorder.stop();
+            mIsRecording = false;
             mVideoStitcher.appendFile(mVideoFile.getFile());
             if (mVideoFile == null || !mVideoFile.getFile().exists()) {
                 Log.w(TAG, "Video file does not exist after stop: " + mVideoFile.getFile().getAbsolutePath());
