@@ -12,10 +12,10 @@ import com.bcmaffordances.camcorderremote.R;
 abstract public class AbstractRecordingState implements RecordingState {
 
     protected ImageButton mRecordButton, mResumeButton, mPauseButton, mStopButton;
-
-    // TODO set activity as member var so that all states don't need to pass in c'tor
+    protected Activity mActivity;
 
     public AbstractRecordingState(Activity activity) {
+        mActivity = activity;
         mRecordButton = (ImageButton) activity.findViewById(R.id.recordButton);
         mResumeButton = (ImageButton) activity.findViewById(R.id.resumeButton);
         mPauseButton = (ImageButton) activity.findViewById(R.id.pauseButton);
