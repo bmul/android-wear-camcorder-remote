@@ -20,8 +20,7 @@ import com.bcmaffordances.camcorderremote.state.RecordingStateContext;
 import com.bcmaffordances.camcorderremote.state.ResumedRecordingState;
 import com.bcmaffordances.camcorderremote.state.StartedRecordingState;
 import com.bcmaffordances.camcorderremote.state.StoppedRecordingState;
-import com.bcmaffordances.camcorderremote.video.InitCameraListener;
-import com.bcmaffordances.camcorderremote.video.ReleaseCameraListener;
+import com.bcmaffordances.camcorderremote.video.CameraListener;
 import com.bcmaffordances.camcorderremote.video.VideoRecorder;
 import com.bcmaffordances.camcorderremote.video.VideoRecorderException;
 import com.bcmaffordances.wearableconnector.CamcorderRemoteConstants;
@@ -188,15 +187,13 @@ public class VideoCaptureActivity extends Activity {
         mRecordingStateContext.updateDisplayedButtons();
 
         mVideoRecorder = new VideoRecorder();
-        mVideoRecorder.setOnInitCameraListener(new InitCameraListener(){
+        mVideoRecorder.setCameraListener(new CameraListener() {
             @Override
             public void onInit() {
                 mCameraPreviewFrame.addView(mVideoRecorder.getCameraPreview(), 0);
                 mRecordingStateContext.changeState(new ReadyRecordingState(mActivity));
                 mRecordingStateContext.updateDisplayedButtons();
             }
-        });
-        mVideoRecorder.setOnReleaseCameraListener(new ReleaseCameraListener(){
             @Override
             public void onRelease() {
                 mCameraPreviewFrame.removeView(mVideoRecorder.getCameraPreview());

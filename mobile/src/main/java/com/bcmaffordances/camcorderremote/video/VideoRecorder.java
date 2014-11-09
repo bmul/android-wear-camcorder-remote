@@ -28,8 +28,7 @@ public class VideoRecorder {
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
     }
 
-    private InitCameraListener mInitCameraListener;
-    private ReleaseCameraListener mReleaseCameraListener;
+    private CameraListener mCameraListener;
     private Camera mCamera;
     private CameraPreview mCameraPreview;
     private MediaRecorder mMediaRecorder;
@@ -60,8 +59,8 @@ public class VideoRecorder {
                 if (null != cam) {
                     setCameraObject(cam);
                     mCameraPreview = new CameraPreview(mCtx, cam);
-                    if (null != mInitCameraListener) {
-                        mInitCameraListener.onInit();
+                    if (null != mCameraListener) {
+                        mCameraListener.onInit();
                     }
                 } else {
                     Log.wtf(TAG, "Failed to init camera");
@@ -77,17 +76,17 @@ public class VideoRecorder {
         stop();
         releaseMediaRecorder();
         releaseCameraObject();
-        if (null != mReleaseCameraListener) {
-            mReleaseCameraListener.onRelease();
+        if (null != mCameraListener) {
+            mCameraListener.onRelease();
         }
     }
 
-    public void setOnInitCameraListener(InitCameraListener listener) {
-        mInitCameraListener = listener;
-    }
-
-    public void setOnReleaseCameraListener(ReleaseCameraListener listener) {
-        mReleaseCameraListener = listener;
+    /**
+     * set a Camera event listener.
+     * @param listener
+     */
+    public void setCameraListener(CameraListener listener) {
+        mCameraListener = listener;
     }
 
     /**
