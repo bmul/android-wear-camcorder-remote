@@ -26,8 +26,8 @@ public class ActionFragment extends Fragment {
      * Create an ActionFragment.
      *
      * This class has public setters on the text/icon resources and onClickListener
-     * facilitate hot-swapping functionality. This allows the user to access a different
-     * set of actions without having to use another fragment. This is especially useful
+     * facilitate 'hot-swapping' UI functionality. This allows the end-user to access a different
+     * set of actions without having to access another fragment. This is especially useful
      * for situations such as changing a 'Play' action into a 'Pause' action.
      *
      * @param iconResourceId Icon resource identifier
@@ -67,18 +67,30 @@ public class ActionFragment extends Fragment {
         actionButton.setOnClickListener(mOnClickListener);
     }
 
+    /**
+     * Set UI text below the Action button
+     * @param actionTextResourceId Text resource identifier
+     */
     public void setTextResource(int actionTextResourceId) {
         if (mActionTextView != null) {
             mActionTextView.setText(getString(actionTextResourceId));
         }
     }
 
+    /**
+     * Set UI Action button icon
+     * @param actionIconResourceId Image resource identifier
+     */
     public void setIconResource(int actionIconResourceId) {
         if (mActionButtonImageView != null) {
             mActionButtonImageView.setImageResource(actionIconResourceId);
         }
     }
 
+    /**
+     * Set Action button onClick listener
+     * @param listener View.OnClickListener object
+     */
     public void setOnClickListener(View.OnClickListener listener) {
         mOnClickListener = listener;
     }

@@ -16,8 +16,8 @@ public class CamcorderRemotePagerAdapter extends FragmentGridPagerAdapter  {
 
     /**
      * Constructor
-     * @param fragmentManager
-     * @param recordingStateContext
+     * @param fragmentManager FragmentManager
+     * @param recordingStateContext The recording state context manager
      */
     public CamcorderRemotePagerAdapter(FragmentManager fragmentManager,
                                        WearableRecordingStateContext recordingStateContext) {
@@ -39,7 +39,7 @@ public class CamcorderRemotePagerAdapter extends FragmentGridPagerAdapter  {
     public Fragment getFragment(int rowIndex, int colIndex) {
         if (0 == colIndex) {
             // Delegate to the RecordingStateContext object to determine
-            // which recording action to make available based upon the
+            // which recording actions to make available based upon the
             // current recording state.
             return mRecordingStateContext.getRecordActionFragment();
         }
