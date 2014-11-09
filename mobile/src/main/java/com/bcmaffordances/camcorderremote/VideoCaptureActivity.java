@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.bcmaffordances.camcorderremote.state.PausedRecordingState;
 import com.bcmaffordances.camcorderremote.state.ReadyRecordingState;
@@ -22,6 +23,7 @@ import com.bcmaffordances.camcorderremote.state.StoppedRecordingState;
 import com.bcmaffordances.camcorderremote.video.InitCameraListener;
 import com.bcmaffordances.camcorderremote.video.ReleaseCameraListener;
 import com.bcmaffordances.camcorderremote.video.VideoRecorder;
+import com.bcmaffordances.camcorderremote.video.VideoRecorderException;
 import com.bcmaffordances.wearableconnector.CamcorderRemoteConstants;
 import com.bcmaffordances.wearableconnector.WearableConnector;
 import com.google.android.gms.common.ConnectionResult;
@@ -88,7 +90,11 @@ public class VideoCaptureActivity extends Activity {
     // gets called by the button press
     public void startRecording(View v) {
         Log.d(TAG, "startRecording()");
-        mVideoRecorder.startRecording();
+        try {
+            mVideoRecorder.startRecording();
+        } catch (VideoRecorderException e) {
+            Toast.makeText(mActivity, "Failed to record video", Toast.LENGTH_LONG).show();
+        }
         mRecordingStateContext.changeState(new StartedRecordingState(mActivity));
         mRecordingStateContext.updateDisplayedButtons();
     }
@@ -96,7 +102,11 @@ public class VideoCaptureActivity extends Activity {
     // gets called by the button press
     public void resumeRecording(View v) {
         Log.d(TAG, "resumeRecording()");
-        mVideoRecorder.resumeRecording();
+        try {
+            mVideoRecorder.resumeRecording();
+        } catch (VideoRecorderException e) {
+            Toast.makeText(mActivity, "Failed to resume recording", Toast.LENGTH_LONG).show();
+        }
         mRecordingStateContext.changeState(new ResumedRecordingState(mActivity));
         mRecordingStateContext.updateDisplayedButtons();
     }

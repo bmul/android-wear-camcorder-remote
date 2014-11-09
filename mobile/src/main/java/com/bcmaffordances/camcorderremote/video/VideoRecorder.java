@@ -70,6 +70,9 @@ public class VideoRecorder {
         }.execute();
     }
 
+    /**
+     * Release the camera.
+     */
     public void release() {
         stop();
         releaseMediaRecorder();
@@ -87,17 +90,29 @@ public class VideoRecorder {
         mReleaseCameraListener = listener;
     }
 
+    /**
+     * Return the Camera preview.
+     * @return CameraPreview object.
+     */
     public CameraPreview getCameraPreview() {
         return mCameraPreview;
     }
 
-    public void startRecording() {
+    /**
+     * Start recording a new video.
+     * @throws VideoRecorderException if unable to record.
+     */
+    public void startRecording() throws VideoRecorderException {
         Log.d(TAG, "startRecording()");
         record();
         mVideoStitcher = new VideoStitcher(mCtx, mVideoFile.getFile());
     }
 
-    public void resumeRecording() {
+    /**
+     * Resume recording a video.
+     * @throws VideoRecorderException if unable to record.
+     */
+    public void resumeRecording() throws VideoRecorderException {
         Log.d(TAG, "resumeRecording()");
         record();
         // Purposefully don't create a new mVideoStitcher object.
@@ -105,6 +120,9 @@ public class VideoRecorder {
         // appending files.
     }
 
+    /**
+     * Pause recording a video.
+     */
     public void pauseRecording() {
         Log.d(TAG, "pauseRecording()");
         stop();
@@ -113,6 +131,9 @@ public class VideoRecorder {
         // appending files.
     }
 
+    /**
+     * Stop recording a video.
+     */
     public void stopRecording() {
         Log.d(TAG, "stopRecording()");
         stop();
@@ -140,13 +161,24 @@ public class VideoRecorder {
         }
     }
 
-    private void record() {
+    /**
+     * Record video.
+     * @throws VideoRecorderException if unable to record
+     */
+    private void record() throws VideoRecorderException {
 
         if (mIsRecording) {
+            // already recording, so do nothing
             return;
         }
 
-        mVideoFile = new VideoFile();
+        try {
+            mVideoFile = new VideoFile();
+        } catch (VideoFileException e) {
+            Log.e(TAG, "Failed to create a new VideoFile object");
+            throw new VideoRecorderException("Failed to create a new VideoFile object");
+        }
+
         // we need to unlock the camera so that mediaRecorder can use it
         mCamera.unlock(); // unnecessary in API >= 14
         mMediaRecorder = new MediaRecorder();
@@ -170,9 +202,13 @@ public class VideoRecorder {
         }
     }
 
+    /**
+     * Stop recording video.
+     */
     private void stop() {
 
         if (!mIsRecording) {
+            // already stopped, so do nothing
             return;
         }
 
@@ -180,12 +216,8 @@ public class VideoRecorder {
             mMediaRecorder.stop();
             mIsRecording = false;
             mVideoStitcher.appendFile(mVideoFile.getFile());
-            if (mVideoFile == null || !mVideoFile.getFile().exists()) {
-                Log.w(TAG, "Video file does not exist after stop: " + mVideoFile.getFile().getAbsolutePath());
-            }
         } catch (Exception e) {
-            Log.w(TAG, "Failed to stop recording", e);
-            mVideoFile.deleteFile();
+            Log.e(TAG, "Failed to stop recording", e);
         } finally {
             releaseMediaRecorder();
             mVideoFile = null;

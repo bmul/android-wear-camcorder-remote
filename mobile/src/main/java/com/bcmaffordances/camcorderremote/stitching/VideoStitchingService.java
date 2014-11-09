@@ -41,6 +41,7 @@ public class VideoStitchingService extends IntentService {
 
         Log.d(TAG, "onHandleIntent() invoked");
 
+        // Input validation
         File baseFile = (File) intent.getExtras().get(INTENT_EXTRA_BASE_FILE);
         File fileToAppend = (File) intent.getExtras().get(INTENT_EXTRA_FILE_TO_APPEND);
         if (!isIntentValid(baseFile, fileToAppend)) {

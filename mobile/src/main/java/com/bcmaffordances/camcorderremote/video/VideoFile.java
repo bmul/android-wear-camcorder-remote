@@ -1,11 +1,8 @@
 package com.bcmaffordances.camcorderremote.video;
 
-import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Class to encapsulate the creation and management of video files.
@@ -13,41 +10,36 @@ import java.util.Date;
 public class VideoFile {
 
     private static final String TAG = "VideoFile";
-    private File mVideoFile;
+    private File mFile;
 
     /**
-     * Create a VideoFile.
+     * Constructor
+     * @throws VideoFileException if unable to create a new VideoFile.
      */
-    public VideoFile() {
-        // TODO pull out factory class
-        File dir = new File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES),
-                this.getClass().getPackage().getName());
-
-        if (!dir.exists() && !dir.mkdirs()) {
-            Log.wtf(TAG, "Failed to create storage directory: " + dir.getAbsolutePath());
-            mVideoFile = null;
-        } else {
-            mVideoFile = new File(
-                    dir.getAbsolutePath(),
-                    new SimpleDateFormat("'BCM_'yyyy_MM_dd_HH_mm_ss'.mp4'").format(new Date()));
-        }
+    public VideoFile() throws VideoFileException {
+        mFile = VideoFileFactory.createFile();
     }
 
     /**
-     * Get the underlying video File object.
-     * @return File
+     * Get the file.
+     * @return File object
      */
     public File getFile() {
-        return mVideoFile;
+        return mFile;
     }
 
     /**
-     * Delete the underlying video file.
+     * Delete the file.
+     * @throws VideoFileException if unable to delete the file.
      */
-    public void deleteFile() {
-        if (mVideoFile != null && mVideoFile.exists() && mVideoFile.delete()) {
-            Log.d(TAG, "Deleted " + mVideoFile.getAbsolutePath());
+    public void deleteFile() throws VideoFileException {
+        if (mFile != null && mFile.exists()) {
+            if (mFile.delete()) {
+                Log.d(TAG, "Deleted " + mFile.getAbsolutePath());
+            } else {
+                Log.d(TAG, "Failed to delete: " + mFile.getAbsolutePath());
+                throw new VideoFileException("Failed to delete file: " + mFile.getAbsolutePath());
+            }
         }
     }
 }
