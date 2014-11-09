@@ -1,4 +1,4 @@
-package com.bcmaffordances.wearableconnector;
+package com.bcmaffordances.camcorderremotecommon;
 
 /**
  * Constants common to the camcorderRemote handheld & wearable apps.

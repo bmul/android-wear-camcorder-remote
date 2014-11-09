@@ -4,7 +4,7 @@ import android.view.View;
 
 import com.bcmaffordances.camcorderremote.ActionFragment;
 import com.bcmaffordances.camcorderremote.R;
-import com.bcmaffordances.wearableconnector.CamcorderRemoteConstants;
+import com.bcmaffordances.camcorderremotecommon.CamcorderRemoteConstants;
 import com.bcmaffordances.wearableconnector.WearableConnector;
 
 /**
@@ -18,7 +18,9 @@ public class ReadyState extends AbstractWearableRecordingState {
         actionFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                wearableConnector.sendMessage(CamcorderRemoteConstants.REQUEST_RECORD);
+                wearableConnector.sendMessage(
+                        CamcorderRemoteConstants.MESSAGE_PATH,
+                        CamcorderRemoteConstants.REQUEST_RECORD);
             }
         });
         return actionFragment;

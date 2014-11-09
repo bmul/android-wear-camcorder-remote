@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.bcmaffordances.wearableconnector.CamcorderRemoteConstants;
+import com.bcmaffordances.camcorderremotecommon.CamcorderRemoteConstants;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.WearableListenerService;
 
@@ -20,6 +20,8 @@ public class WearableMessageListenerService extends WearableListenerService {
     public void onMessageReceived(MessageEvent messageEvent) {
 
         Log.d(TAG, "Incoming message...");
+
+        // TODO Remove hard-coded message path
 
         if (messageEvent.getPath().equals(CamcorderRemoteConstants.MESSAGE_PATH)) {
             final String message = new String(messageEvent.getData());

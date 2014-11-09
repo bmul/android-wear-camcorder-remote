@@ -75,11 +75,12 @@ public class WearableConnector {
 
     /**
      * Send a message to connected devices.
+     * @param path Message path.
      * @param message Message to send.
      */
-    public void sendMessage(String message) {
+    public void sendMessage(String path, String message) {
         if (mGoogleApiClient.isConnected()) {
-            new WearableMessageSender(message, mGoogleApiClient).start();
+            new WearableMessageSender(path, message, mGoogleApiClient).start();
         } else {
             Log.w(TAG, "Attempted to send message when not connected to Google API client.");
         }

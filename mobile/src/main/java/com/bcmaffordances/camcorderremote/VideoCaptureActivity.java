@@ -23,7 +23,7 @@ import com.bcmaffordances.camcorderremote.state.StoppedRecordingState;
 import com.bcmaffordances.camcorderremote.video.CameraListener;
 import com.bcmaffordances.camcorderremote.video.VideoRecorder;
 import com.bcmaffordances.camcorderremote.video.VideoRecorderException;
-import com.bcmaffordances.wearableconnector.CamcorderRemoteConstants;
+import com.bcmaffordances.camcorderremotecommon.CamcorderRemoteConstants;
 import com.bcmaffordances.wearableconnector.WearableConnector;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -176,19 +176,27 @@ public class VideoCaptureActivity extends Activity {
                 Log.d(TAG, "Message received from wearable: " + message);
                 if (message.equals(CamcorderRemoteConstants.REQUEST_RECORD)) {
                     startRecording(mCameraPreviewFrame);
-                    mWearableConnector.sendMessage(CamcorderRemoteConstants.RESPONSE_RECORDING);
+                    mWearableConnector.sendMessage(
+                            CamcorderRemoteConstants.MESSAGE_PATH,
+                            CamcorderRemoteConstants.RESPONSE_RECORDING);
                 }
                 else if(message.equals(CamcorderRemoteConstants.REQUEST_RESUME)) {
                     resumeRecording(mCameraPreviewFrame);
-                    mWearableConnector.sendMessage(CamcorderRemoteConstants.RESPONSE_RESUMED);
+                    mWearableConnector.sendMessage(
+                            CamcorderRemoteConstants.MESSAGE_PATH,
+                            CamcorderRemoteConstants.RESPONSE_RESUMED);
                 }
                 else if(message.equals(CamcorderRemoteConstants.REQUEST_PAUSE)) {
                     pauseRecording(mCameraPreviewFrame);
-                    mWearableConnector.sendMessage(CamcorderRemoteConstants.RESPONSE_PAUSED);
+                    mWearableConnector.sendMessage(
+                            CamcorderRemoteConstants.MESSAGE_PATH,
+                            CamcorderRemoteConstants.RESPONSE_PAUSED);
                 }
                 else if(message.equals(CamcorderRemoteConstants.REQUEST_STOP)) {
                     stopRecording(mCameraPreviewFrame);
-                    mWearableConnector.sendMessage(CamcorderRemoteConstants.RESPONSE_STOPPED);
+                    mWearableConnector.sendMessage(
+                            CamcorderRemoteConstants.MESSAGE_PATH,
+                            CamcorderRemoteConstants.RESPONSE_STOPPED);
                 }
 
             }

@@ -1,13 +1,12 @@
-apply plugin: 'com.android.application'
-
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 21
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        applicationId "com.bcmaffordances.camcorderremote"
-        minSdkVersion 20
+        applicationId "com.bcmaffordances.camcorderremotecommon"
+        minSdkVersion 19
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -22,10 +21,4 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':camcorderremotecommon')
-    compile(project(':wearableconnector')) {
-        transitive = false
-    }
-    compile 'com.google.android.support:wearable:1.0.0'
-    compile 'com.google.android.gms:play-services-wearable:6.1.11'
 }

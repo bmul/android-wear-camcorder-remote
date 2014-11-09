@@ -26,6 +26,7 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     wearApp project(':wear')
+    compile project(':camcorderremotecommon')
     compile(project(':wearableconnector')) {
         transitive = false
     }

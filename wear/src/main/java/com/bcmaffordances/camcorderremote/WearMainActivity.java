@@ -13,7 +13,7 @@ import android.view.WindowManager;
 
 import com.bcmaffordances.camcorderremote.state.ReadyState;
 import com.bcmaffordances.camcorderremote.state.WearableRecordingStateContext;
-import com.bcmaffordances.wearableconnector.CamcorderRemoteConstants;
+import com.bcmaffordances.camcorderremotecommon.CamcorderRemoteConstants;
 import com.bcmaffordances.wearableconnector.WearableConnector;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -35,6 +35,7 @@ public class WearMainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wear_main);
+        initWearableConnector();
         mRecordingStateContext = new WearableRecordingStateContext(mWearableConnector);
         mCamcorderRemotePagerAdapter = new CamcorderRemotePagerAdapter(getFragmentManager(), mRecordingStateContext);
         mGridViewPager = (GridViewPager) findViewById(R.id.pager);

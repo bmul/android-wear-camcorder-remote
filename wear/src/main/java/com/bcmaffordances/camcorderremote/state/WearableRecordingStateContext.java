@@ -1,7 +1,7 @@
 package com.bcmaffordances.camcorderremote.state;
 
 import com.bcmaffordances.camcorderremote.ActionFragment;
-import com.bcmaffordances.wearableconnector.CamcorderRemoteConstants;
+import com.bcmaffordances.camcorderremotecommon.CamcorderRemoteConstants;
 import com.bcmaffordances.wearableconnector.WearableConnector;
 
 /**
