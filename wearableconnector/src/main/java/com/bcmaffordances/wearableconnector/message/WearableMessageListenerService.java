@@ -9,7 +9,8 @@ import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.WearableListenerService;
 
 /**
- * WearableMessageListenerService listens for messages.
+ * WearableMessageListenerService listens for messages
+ * and issues local broadcasts containing the new message data.
  */
 public class WearableMessageListenerService extends WearableListenerService {
 
