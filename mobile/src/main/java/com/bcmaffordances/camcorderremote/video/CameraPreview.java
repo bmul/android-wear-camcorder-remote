@@ -39,8 +39,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     public void surfaceDestroyed(SurfaceHolder holder) {
         Log.d(TAG, "surfaceDestroyed()");
-        //mCamera.stopPreview();
-        // TODO this was causing crashes
+        //mCamera.stopPreview();  TODO this was causing crashes
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {

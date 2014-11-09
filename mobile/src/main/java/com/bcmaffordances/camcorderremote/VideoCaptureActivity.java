@@ -86,7 +86,10 @@ public class VideoCaptureActivity extends Activity {
         super.onDestroy();
     }
 
-    // gets called by the button press
+    /**
+     * Start recording.
+     * @param v View object
+     */
     public void startRecording(View v) {
         Log.d(TAG, "startRecording()");
         try {
@@ -98,7 +101,10 @@ public class VideoCaptureActivity extends Activity {
         mRecordingStateContext.updateDisplayedButtons();
     }
 
-    // gets called by the button press
+    /**
+     * Resume recording.
+     * @param v View object
+     */
     public void resumeRecording(View v) {
         Log.d(TAG, "resumeRecording()");
         try {
@@ -110,7 +116,10 @@ public class VideoCaptureActivity extends Activity {
         mRecordingStateContext.updateDisplayedButtons();
     }
 
-    // gets called by the button press
+    /**
+     * Pause recording.
+     * @param v View object
+     */
     public void pauseRecording(View v) {
         Log.d(TAG, "pauseRecording()");
         mVideoRecorder.pauseRecording();
@@ -118,7 +127,10 @@ public class VideoCaptureActivity extends Activity {
         mRecordingStateContext.updateDisplayedButtons();
     }
 
-    // gets called by the button press
+    /**
+     * Stop recording.
+     * @param v View object
+     */
     public void stopRecording(View v) {
         Log.d(TAG, "stopRecording()");
         mVideoRecorder.stopRecording();
@@ -126,6 +138,10 @@ public class VideoCaptureActivity extends Activity {
         mRecordingStateContext.updateDisplayedButtons();
     }
 
+    /**
+     * Initialize the wearable connector which will
+     * facilitate communication to wearable devices.
+     */
     private void initWearableConnector() {
 
         // Setup wearable connection callbacks
@@ -181,6 +197,9 @@ public class VideoCaptureActivity extends Activity {
         LocalBroadcastManager.getInstance(this).registerReceiver(mLocalMessageReceiver, messageFilter);
     }
 
+    /**
+     * Initialize the video recorder and associated camera callbacks.
+     */
     private void initVideoRecorder() {
 
         mRecordingStateContext = new RecordingStateContext(mActivity);

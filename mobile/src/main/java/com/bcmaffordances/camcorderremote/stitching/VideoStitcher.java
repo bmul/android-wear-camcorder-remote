@@ -30,8 +30,8 @@ public class VideoStitcher {
     }
 
     /**
-     * Append an mp4 file.
-     * @param fileToAppend
+     * Append a video file.
+     * @param fileToAppend A file referencing a video file
      */
     public void appendFile(File fileToAppend) {
         if (null == fileToAppend) throw new IllegalArgumentException();

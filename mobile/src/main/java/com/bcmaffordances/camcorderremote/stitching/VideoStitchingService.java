@@ -26,8 +26,8 @@ import java.util.List;
  */
 public class VideoStitchingService extends IntentService {
 
-    public static final String INTENT_EXTRA_BASE_FILE = "com.bcmaffordances.videoRecorder.baseFile";
-    public static final String INTENT_EXTRA_FILE_TO_APPEND = "com.bcmaffordances.videoRecorder.fileToAppend";
+    public static final String INTENT_EXTRA_BASE_FILE = "com.bcmaffordances.camcorderremote.stitching.baseFile";
+    public static final String INTENT_EXTRA_FILE_TO_APPEND = "com.bcmaffordances.camcorderremote.stitching.fileToAppend";
 
     private final String TAG = "VideoStitchingService";
 
@@ -93,6 +93,12 @@ public class VideoStitchingService extends IntentService {
         }
     }
 
+    /**
+     * Perform simple input validation
+     * @param baseFile The base video file
+     * @param fileToAppend The video file to append to the base file
+     * @return Returns true if inputs are valid
+     */
     private boolean isIntentValid(File baseFile, File fileToAppend) {
         boolean ret = false;
         if (null != baseFile && null != fileToAppend) {

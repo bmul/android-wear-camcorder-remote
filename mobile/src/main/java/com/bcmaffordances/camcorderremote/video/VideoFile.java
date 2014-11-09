@@ -14,14 +14,14 @@ public class VideoFile {
 
     /**
      * Constructor
-     * @throws VideoFileException if unable to create a new VideoFile.
+     * @throws VideoFileException if unable to create a new VideoFile object.
      */
     public VideoFile() throws VideoFileException {
         mFile = VideoFileFactory.createFile();
     }
 
     /**
-     * Get the file.
+     * Get the underlying file.
      * @return File object
      */
     public File getFile() {
@@ -30,7 +30,7 @@ public class VideoFile {
 
     /**
      * Delete the file.
-     * @throws VideoFileException if unable to delete the file.
+     * @throws VideoFileException if unable to delete the underlying video file on the file system.
      */
     public void deleteFile() throws VideoFileException {
         if (mFile != null && mFile.exists()) {

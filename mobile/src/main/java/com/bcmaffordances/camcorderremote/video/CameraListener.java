@@ -6,12 +6,12 @@ package com.bcmaffordances.camcorderremote.video;
 public interface CameraListener {
 
     /**
-     * Callback to be invoked after Camera is initialized.
+     * Callback to be invoked on Camera initialization.
      */
     public void onInit();
 
     /**
-     * Callback to be invoked after Camera is released.
+     * Callback to be invoked once Camera is released.
      */
     public void onRelease();
 }

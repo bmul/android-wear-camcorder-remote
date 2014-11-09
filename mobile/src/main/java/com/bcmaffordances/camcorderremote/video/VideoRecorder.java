@@ -82,7 +82,7 @@ public class VideoRecorder {
     }
 
     /**
-     * set a Camera event listener.
+     * Set a Camera event listener.
      * @param listener
      */
     public void setCameraListener(CameraListener listener) {
