@@ -28,6 +28,7 @@ public class VideoStitchingService extends IntentService {
 
     public static final String INTENT_EXTRA_BASE_FILE = "com.bcmaffordances.camcorderremote.stitching.baseFile";
     public static final String INTENT_EXTRA_FILE_TO_APPEND = "com.bcmaffordances.camcorderremote.stitching.fileToAppend";
+    public static final String INTENT_EXTRA_OUTPUT_FILE = "com.bcmaffordances.camcorderremote.stitching.outputFile";
 
     private final String TAG = "VideoStitchingService";
 
@@ -44,7 +45,8 @@ public class VideoStitchingService extends IntentService {
         // Input validation
         File baseFile = (File) intent.getExtras().get(INTENT_EXTRA_BASE_FILE);
         File fileToAppend = (File) intent.getExtras().get(INTENT_EXTRA_FILE_TO_APPEND);
-        if (!isIntentValid(baseFile, fileToAppend)) {
+        File outputFile = (File) intent.getExtras().get(INTENT_EXTRA_OUTPUT_FILE);
+        if (!isIntentValid(baseFile, fileToAppend, outputFile)) {
             return;
         }
 
@@ -78,15 +80,20 @@ public class VideoStitchingService extends IntentService {
             }
 
             Container out = new DefaultMp4Builder().build(result);
-            // Need to delete the baseFile before overwriting. If this isn't done, the output file will be corrupted.
-            boolean baseFileDeleted = baseFile.delete();
-            boolean fileToAppendDeleted = fileToAppend.delete();
-            if (!baseFileDeleted || !fileToAppendDeleted) {
-                Log.e(TAG, "Failed to delete baseFile or fileToAppend before writing output file.");
-            }
-            FileChannel fc = new RandomAccessFile(baseFile.getAbsolutePath(), "rw").getChannel();
+            Log.d(TAG, "Writing combined video files to: " + outputFile.getAbsolutePath());
+            FileChannel fc = new RandomAccessFile(outputFile.getAbsolutePath(), "rw").getChannel();
             out.writeContainer(fc);
             fc.close();
+
+            // Delete input files after stitching has completed
+            boolean baseFileDeleted = baseFile.delete();
+            boolean fileToAppendDeleted = fileToAppend.delete();
+            if (!baseFileDeleted) {
+                Log.w(TAG, "Failed to delete baseFile: " + baseFile.getAbsolutePath());
+            }
+            if (!fileToAppendDeleted) {
+                Log.w(TAG, "Failed to delete fileToAppend: " + fileToAppend.getAbsolutePath());
+            }
 
         } catch(IOException e) {
             Log.e(TAG, e.getMessage(), e);
@@ -97,17 +104,18 @@ public class VideoStitchingService extends IntentService {
      * Perform simple input validation
      * @param baseFile The base video file
      * @param fileToAppend The video file to append to the base file
+     * @param outputFile The output video file
      * @return Returns true if inputs are valid
      */
-    private boolean isIntentValid(File baseFile, File fileToAppend) {
-        boolean ret = false;
-        if (null != baseFile && null != fileToAppend) {
-            if (baseFile.getAbsolutePath() != fileToAppend.getAbsolutePath()) {
-                ret = true;
-            } else {
-                Log.w(TAG, "Base file is the same as the file-to-append");
-            }
+    private boolean isIntentValid(File baseFile, File fileToAppend, File outputFile) {
+        if (null == baseFile || null == fileToAppend || null == outputFile) {
+            Log.e(TAG, "Input parameter(s) is null");
+            return false;
         }
-        return ret;
+        if (baseFile.getAbsolutePath() == fileToAppend.getAbsolutePath()) {
+            Log.w(TAG, "Base file is the same as the file-to-append");
+            return false;
+        }
+        return true;
     }
 }
