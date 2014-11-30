@@ -103,8 +103,8 @@ public class VideoRecorder {
      */
     public void startRecording() throws VideoRecorderException {
         Log.d(TAG, "startRecording()");
+        mVideoStitcher = new VideoStitcher(mCtx);
         record();
-        mVideoStitcher = new VideoStitcher(mCtx, mVideoFile.getFile());
     }
 
     /**
